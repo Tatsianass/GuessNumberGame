@@ -1,4 +1,6 @@
-﻿namespace GuessNumberGame.ConsoleUI
+﻿using GuessNumberGame.ConsoleUI.Models;
+
+namespace GuessNumberGame.ConsoleUI
 {
     class Program
     {
@@ -7,7 +9,10 @@
             ConsoleWriter.WriteLine("Welcome to Guess Number Game!");
             do
             {
-                Game game = new Game();
+                GameConfigurator gameConfigurator = new GameConfigurator();
+                GameConfigurationModel gameConfigurationModel = gameConfigurator.Configure();
+
+                Game game = new Game(gameConfigurationModel);
                 game.Play();
             } while (true);
         }

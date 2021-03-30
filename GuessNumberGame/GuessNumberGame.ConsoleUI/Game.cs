@@ -1,19 +1,24 @@
-﻿using System;
+﻿using GuessNumberGame.ConsoleUI.Models;
+using System;
 
 namespace GuessNumberGame.ConsoleUI
 {
     public class Game
     {
-        private static readonly int numberOfTry = 3;
-        private static int wishNumber = 0;
+        private readonly GameConfigurationModel gameConfigurationModel;
+
+        public Game(GameConfigurationModel gameConfigurationModel)
+        {
+            this.gameConfigurationModel = gameConfigurationModel;
+        }
 
         public void Play()
         {
+            int numberOfTry = 3;
+            int wishNumber = 0;
             bool isUserWon = false;
 
-            ConsoleWriter.WriteLine("Please, enter wish number: ");
-            wishNumber = GetEnteredNumber();
-
+            GetWishNumber();
             Console.Clear();
 
             int enteredTry = 0;
@@ -30,32 +35,20 @@ namespace GuessNumberGame.ConsoleUI
                 }
                 else
                 {
-                    DisplayHint(enteredTry);
+                    DisplayHint(enteredTry, wishNumber);
                 }
             }
 
             DisplayResult(isUserWon);
         }
 
-        private static int AskUserWishNumber()
+        private int AskUserWishNumber()
         {
             ConsoleWriter.Write("Your try: ");
-            return GetEnteredNumber();
+            return ConsoleReader.GetEnteredNumber();
         }
 
-        private static int GetEnteredNumber()
-        {
-            string tryValue = Console.ReadLine();
-            bool isParcedSuccessfully = int.TryParse(tryValue, out int parcedValue);
-            if (!isParcedSuccessfully)
-            {
-                ConsoleWriter.WriteLine("Error. Please, enter only numbers: ");
-                GetEnteredNumber();
-            }
-            return parcedValue;
-        }
-
-        private static void DisplayResult(bool isUserWon)
+        private void DisplayResult(bool isUserWon)
         {
             if (isUserWon)
             {
@@ -67,7 +60,7 @@ namespace GuessNumberGame.ConsoleUI
             }
         }
 
-        private static void DisplayHint(int enteredValue)
+        private void DisplayHint(int enteredValue, int wishNumber)
         {
             if (enteredValue > wishNumber)
             {
@@ -77,6 +70,30 @@ namespace GuessNumberGame.ConsoleUI
             {
                 ConsoleWriter.WriteLine($"Hint: Wish number is bigger than {enteredValue}");
             }
+        }
+
+        private int GetWishNumber()
+        {
+            int wishNumber = 0;
+            var isWishNumberValid = false;
+            do
+            {
+                ConsoleWriter.Write("Please, enter wish number: ");
+                wishNumber = ConsoleReader.GetEnteredNumber();
+                isWishNumberValid = ValidateWishNumber(wishNumber);
+
+                if (!isWishNumberValid)
+                {
+                    ConsoleWriter.WriteLine($"Please, enter number in range from {gameConfigurationModel.RangeNumberFrom} to {gameConfigurationModel.RangeNumberTo}");
+                }
+
+            } while (!isWishNumberValid);
+            return wishNumber;
+        }
+
+        private bool ValidateWishNumber(int wishNumber)
+        {
+            return wishNumber >= gameConfigurationModel.RangeNumberFrom && wishNumber <= gameConfigurationModel.RangeNumberTo;
         }
     }
 }
