@@ -11,13 +11,13 @@ namespace GuessNumberGame.ConsoleUI
         {
             bool isUserWon = false;
 
-            Console.WriteLine("Please, enter wish number");
+            ConsoleWriter.WriteLine("Please, enter wish number: ");
             wishNumber = GetEnteredNumber();
 
             Console.Clear();
 
             int enteredTry = 0;
-            Console.WriteLine("Guess the number:");
+            ConsoleWriter.WriteLine("Guess the number: ");
 
             for (int i = 0; i < numberOfTry; i++)
             {
@@ -39,7 +39,7 @@ namespace GuessNumberGame.ConsoleUI
 
         private static int AskUserWishNumber()
         {
-            Console.Write("Your try:");
+            ConsoleWriter.Write("Your try: ");
             return GetEnteredNumber();
         }
 
@@ -49,7 +49,7 @@ namespace GuessNumberGame.ConsoleUI
             bool isParcedSuccessfully = int.TryParse(tryValue, out int parcedValue);
             if (!isParcedSuccessfully)
             {
-                Console.WriteLine("Error. Please, enter only numbers:");
+                ConsoleWriter.WriteLine("Error. Please, enter only numbers: ");
                 GetEnteredNumber();
             }
             return parcedValue;
@@ -59,11 +59,11 @@ namespace GuessNumberGame.ConsoleUI
         {
             if (isUserWon)
             {
-                Console.WriteLine("Well Done!");
+                ConsoleWriter.WriteLine("Well Done!");
             }
             else
             {
-                Console.WriteLine("Game over!");
+                ConsoleWriter.WriteLine("Game over!");
             }
         }
 
@@ -71,11 +71,11 @@ namespace GuessNumberGame.ConsoleUI
         {
             if (enteredValue > wishNumber)
             {
-                Console.WriteLine($"Hint: Wish number is less than {enteredValue}");
+                ConsoleWriter.WriteLine($"Hint: Wish number is less than {enteredValue}");
             }
             else
             {
-                Console.WriteLine($"Hint: Wish number is bigger than {enteredValue}");
+                ConsoleWriter.WriteLine($"Hint: Wish number is bigger than {enteredValue}");
             }
         }
     }
