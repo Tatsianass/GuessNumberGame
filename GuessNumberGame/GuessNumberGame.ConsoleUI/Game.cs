@@ -7,43 +7,6 @@ namespace GuessNumberGame.ConsoleUI
         private static readonly int numberOfTry = 3;
         private static int wishNumber = 0;
 
-        private static int AskUserWishNumber()
-        {
-            Console.Write("Your try:");
-            return GetEnteredNumber();
-        }
-
-        private static int GetEnteredNumber()
-        {
-            string tryValue = Console.ReadLine();
-            int parcedValue = int.Parse(tryValue);
-            return parcedValue;
-        }
-
-        private static void DisplayResult(bool isUserWon)
-        {
-            if (isUserWon)
-            {
-                Console.WriteLine("Well Done!");
-            }
-            else
-            {
-                Console.WriteLine("Game over!");
-            }
-        }
-
-        private static void DisplayHint(int enteredValue)
-        {
-            if (enteredValue > wishNumber)
-            {
-                Console.WriteLine($"Hint: Wish number is less than {enteredValue}");
-            }
-            else
-            {
-                Console.WriteLine($"Hint: Wish number is bigger than {enteredValue}");
-            }
-        }
-
         public void Play()
         {
             bool isUserWon = false;
@@ -72,6 +35,48 @@ namespace GuessNumberGame.ConsoleUI
             }
 
             DisplayResult(isUserWon);
+        }
+
+        private static int AskUserWishNumber()
+        {
+            Console.Write("Your try:");
+            return GetEnteredNumber();
+        }
+
+        private static int GetEnteredNumber()
+        {
+            string tryValue = Console.ReadLine();
+            bool isParcedSuccessfully = int.TryParse(tryValue, out int parcedValue);
+            if (!isParcedSuccessfully)
+            {
+                Console.WriteLine("Error. Please, enter only numbers:");
+                GetEnteredNumber();
+            }
+            return parcedValue;
+        }
+
+        private static void DisplayResult(bool isUserWon)
+        {
+            if (isUserWon)
+            {
+                Console.WriteLine("Well Done!");
+            }
+            else
+            {
+                Console.WriteLine("Game over!");
+            }
+        }
+
+        private static void DisplayHint(int enteredValue)
+        {
+            if (enteredValue > wishNumber)
+            {
+                Console.WriteLine($"Hint: Wish number is less than {enteredValue}");
+            }
+            else
+            {
+                Console.WriteLine($"Hint: Wish number is bigger than {enteredValue}");
+            }
         }
     }
 }
