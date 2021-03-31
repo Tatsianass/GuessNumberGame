@@ -1,4 +1,5 @@
 ﻿using GuessNumberGame.ConsoleUI.Models;
+using GuessNumberGame.ConsoleUI.Validators;
 using System;
 
 namespace GuessNumberGame.ConsoleUI
@@ -6,10 +7,12 @@ namespace GuessNumberGame.ConsoleUI
     public class Game
     {
         private readonly GameConfigurationModel gameConfigurationModel;
+        private readonly WishNumberValidator r;
 
         public Game(GameConfigurationModel gameConfigurationModel)
         {
             this.gameConfigurationModel = gameConfigurationModel;
+            r = new WishNumberValidator(gameConfigurationModel);
         }
 
         public void Play()
@@ -22,11 +25,17 @@ namespace GuessNumberGame.ConsoleUI
             Console.Clear();
 
             int enteredTry = 0;
+            ConsoleWriter.WriteLine($"The range of guess number from: {gameConfigurationModel.RangeNumberFrom} to {gameConfigurationModel.RangeNumberTo}");
             ConsoleWriter.WriteLine("Guess the number: ");
 
             for (int i = 0; i < numberOfTry; i++)
             {
                 enteredTry = AskUserWishNumber();
+
+                if (!r.IsNumberInRange(enteredTry))
+                {
+                    ConsoleWriter.WriteLine($"Error: The range of guess number from: {gameConfigurationModel.RangeNumberFrom} to {gameConfigurationModel.RangeNumberTo}");
+                }
 
                 if (wishNumber == enteredTry)
                 {
@@ -80,7 +89,7 @@ namespace GuessNumberGame.ConsoleUI
             {
                 ConsoleWriter.Write("Please, enter wish number: ");
                 wishNumber = ConsoleReader.GetEnteredNumber();
-                isWishNumberValid = ValidateWishNumber(wishNumber);
+                isWishNumberValid = r.IsNumberInRange(wishNumber);
 
                 if (!isWishNumberValid)
                 {
@@ -89,11 +98,6 @@ namespace GuessNumberGame.ConsoleUI
 
             } while (!isWishNumberValid);
             return wishNumber;
-        }
-
-        private bool ValidateWishNumber(int wishNumber)
-        {
-            return wishNumber >= gameConfigurationModel.RangeNumberFrom && wishNumber <= gameConfigurationModel.RangeNumberTo;
         }
     }
 }
