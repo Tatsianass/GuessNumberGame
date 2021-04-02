@@ -14,12 +14,15 @@ namespace GuessNumberGame.ConsoleUI
             ConsoleWriter.Write("To: ");
             int rangeNumberTo = ConsoleReader.GetEnteredNumber();
 
+            ConsoleWriter.Write("Number of tries: ");
+            int numberOfTries = ConsoleReader.GetEnteredNumber();
+
             GameConfigurationModel gameConfigurationModel = new GameConfigurationModel
             {
                 RangeNumberFrom = rangeNumberFrom,
-                RangeNumberTo = rangeNumberTo
+                RangeNumberTo = rangeNumberTo,
+                NumberOfTries = numberOfTries
             };
-
             return gameConfigurationModel;
         }
     }

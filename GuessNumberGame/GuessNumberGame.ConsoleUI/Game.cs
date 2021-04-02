@@ -7,17 +7,16 @@ namespace GuessNumberGame.ConsoleUI
     public class Game
     {
         private readonly GameConfigurationModel gameConfigurationModel;
-        private readonly WishNumberValidator r;
+        private readonly WishNumberValidator wishNumberValidator;
 
         public Game(GameConfigurationModel gameConfigurationModel)
         {
             this.gameConfigurationModel = gameConfigurationModel;
-            r = new WishNumberValidator(gameConfigurationModel);
+            wishNumberValidator = new WishNumberValidator(gameConfigurationModel);
         }
 
         public void Play()
         {
-            int numberOfTry = 3;
             int wishNumber = 0;
             bool isUserWon = false;
 
@@ -28,11 +27,11 @@ namespace GuessNumberGame.ConsoleUI
             ConsoleWriter.WriteLine($"The range of guess number from: {gameConfigurationModel.RangeNumberFrom} to {gameConfigurationModel.RangeNumberTo}");
             ConsoleWriter.WriteLine("Guess the number: ");
 
-            for (int i = 0; i < numberOfTry; i++)
+            for (int i = 0; i < gameConfigurationModel.NumberOfTries; i++)
             {
                 enteredTry = AskUserWishNumber();
 
-                if (!r.IsNumberInRange(enteredTry))
+                if (!wishNumberValidator.IsNumberInRange(enteredTry))
                 {
                     ConsoleWriter.WriteLine($"Error: The range of guess number from: {gameConfigurationModel.RangeNumberFrom} to {gameConfigurationModel.RangeNumberTo}");
                 }
@@ -89,7 +88,7 @@ namespace GuessNumberGame.ConsoleUI
             {
                 ConsoleWriter.Write("Please, enter wish number: ");
                 wishNumber = ConsoleReader.GetEnteredNumber();
-                isWishNumberValid = r.IsNumberInRange(wishNumber);
+                isWishNumberValid = wishNumberValidator.IsNumberInRange(wishNumber);
 
                 if (!isWishNumberValid)
                 {
